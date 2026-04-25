@@ -4,6 +4,7 @@
 
 import React from "react"
 import { Search } from "lucide-react"
+import { Input } from "@/components/ui/input"
 
 interface SearchBarProps {
   value: string
@@ -18,15 +19,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   return (
     <div className="relative">
-      <input
+      <Input
         type="text"
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-12 w-full rounded-xl border border-slate-200 bg-white pr-12 pl-4 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus:border-indigo-200 focus:ring-4 focus:ring-indigo-100 focus:outline-none"
+        className="h-11 rounded-xl border-border/70 bg-background pr-11 pl-4 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:ring-2"
         aria-label="Search logs"
       />
-      <Search className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-slate-400" />
+      <Search className="pointer-events-none absolute top-1/2 right-3.5 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
     </div>
   )
 }

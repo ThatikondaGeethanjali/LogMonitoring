@@ -14,6 +14,7 @@ import { SearchBar } from "./SearchBar"
 import { FilterControls } from "./FilterControls"
 import { ResultsCount } from "./ResultsCount"
 import { LogList } from "./LogList"
+import { Separator } from "@/components/ui/separator"
 
 /**
  * SideBar Component
@@ -64,8 +65,8 @@ export default function SideBar({
   }
 
   return (
-    <aside className="flex h-full min-h-0 flex-col border-r border-slate-200 bg-slate-50/70">
-      <div className="border-b border-slate-200 bg-white/90 px-4 py-5 backdrop-blur">
+    <aside className="flex h-full min-h-0 flex-col border-r bg-sidebar text-sidebar-foreground">
+      <div className="bg-sidebar/95 px-4 py-5 backdrop-blur">
         <SideBarHeader
           title="Crash Logs"
           description="Monitor and analyze crashes in your application"
@@ -87,6 +88,8 @@ export default function SideBar({
         <div className="mt-4">
           <ResultsCount count={filteredAndSortedLogs.length} />
         </div>
+
+        <Separator className="mt-4" />
       </div>
 
       <div className="flex-1 overflow-y-auto">

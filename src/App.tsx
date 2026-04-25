@@ -2,7 +2,7 @@ import Home from "./pages/Home"
 
 export function App() {
   return (
-    <div className="flex min-h-svh p-6">
+    <div className="h-svh overflow-hidden">
       <Home />
     </div>
   )

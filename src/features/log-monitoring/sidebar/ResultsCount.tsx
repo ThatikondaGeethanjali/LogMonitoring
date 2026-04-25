@@ -10,7 +10,7 @@ interface ResultsCountProps {
 
 export const ResultsCount: React.FC<ResultsCountProps> = ({ count }) => {
   return (
-    <div className="text-sm font-medium text-slate-500">
+    <div className="text-sm font-medium text-muted-foreground">
       {count} issue{count !== 1 ? "s" : ""} found
     </div>
   )

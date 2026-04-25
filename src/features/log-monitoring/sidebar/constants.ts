@@ -1,0 +1,88 @@
+/**
+ * Constants and default data for the SideBar component
+ */
+
+import type { Log } from "./types"
+
+export const DEFAULT_LOGS: Log[] = [
+  {
+    id: "1",
+    name: "NullPointerException",
+    package: "com.example.app.MainActivity",
+    severity: "Crash",
+    occurrences: 3542,
+    userCount: 1243,
+    lastSeen: "2024-05-19T10:24:00",
+    trend: 18.6,
+  },
+  {
+    id: "2",
+    name: "IndexOutOfBoundsException",
+    package: "com.example.app.adapter.ItemAdapter",
+    severity: "Crash",
+    occurrences: 1842,
+    userCount: 875,
+    lastSeen: "2024-05-19T09:15:00",
+    trend: -5.2,
+  },
+  {
+    id: "3",
+    name: "IllegalStateException",
+    package: "com.example.app.auth.LoginManager",
+    severity: "Crash",
+    occurrences: 1256,
+    userCount: 642,
+    lastSeen: "2024-05-18T20:45:00",
+    trend: 2.1,
+  },
+  {
+    id: "4",
+    name: "ANR Detected",
+    package: "com.example.app.splash.SplashActivity",
+    severity: "ANR",
+    occurrences: 982,
+    userCount: 531,
+    lastSeen: "2024-05-18T17:30:00",
+    trend: -3.4,
+  },
+  {
+    id: "5",
+    name: "OutOfMemoryError",
+    package: "com.example.app.image.ImageLoader",
+    severity: "Crash",
+    occurrences: 623,
+    userCount: 321,
+    lastSeen: "2024-05-18T11:08:00",
+    trend: 1.2,
+  },
+  {
+    id: "6",
+    name: "SecurityException",
+    package: "com.example.app.permissions.PermissionHelper",
+    severity: "Crash",
+    occurrences: 421,
+    userCount: 210,
+    lastSeen: "2024-05-17T22:45:00",
+    trend: -1.6,
+  },
+  {
+    id: "7",
+    name: "DatabaseException",
+    package: "com.example.app.data.DBHelper",
+    severity: "Crash",
+    occurrences: 312,
+    userCount: 156,
+    lastSeen: "2024-05-17T21:10:00",
+    trend: 0.8,
+  },
+  {
+    id: "8",
+    name: "SocketTimeoutException",
+    package: "com.example.app.network.ApiClient",
+    severity: "Warning",
+    occurrences: 198,
+    userCount: 112,
+    lastSeen: "2024-05-17T18:20:00",
+    trend: -8.4,
+  },
+]

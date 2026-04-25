@@ -18,7 +18,9 @@ export const SideBarHeader: React.FC<SideBarHeaderProps> = ({
       <h2 className="text-3xl font-semibold tracking-tight text-foreground">
         {title}
       </h2>
-      <p className="mt-1 text-sm leading-6 text-muted-foreground">{description}</p>
+      <p className="mt-1 text-sm leading-6 text-muted-foreground">
+        {description}
+      </p>
     </div>
   )
 }

@@ -21,7 +21,7 @@ export const LogItem: React.FC<LogItemProps> = ({
   return (
     <button
       onClick={onClick}
-      className={`w-full rounded-xl border px-4 py-3.5 text-left shadow-sm transition duration-150 focus-visible:ring-2 focus-visible:ring-ring/50 focus:outline-none ${
+      className={`w-full rounded-xl border px-4 py-3.5 text-left shadow-sm transition duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
         isSelected
           ? "border-blue-500 bg-blue-50/70 shadow-[0_0_0_1px_rgba(59,130,246,0.18)]"
           : "border-border bg-card hover:border-border/90 hover:bg-accent/35"

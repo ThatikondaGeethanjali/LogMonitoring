@@ -22,7 +22,8 @@ export const LogList: React.FC<LogListProps> = ({
   isLoading = false,
 }) => {
   const [currentPage, setCurrentPage] = React.useState(1)
-  const pageSize = 7
+  const pageSize = 15
+  const visiblePageCount = 5
   const totalPages = Math.max(1, Math.ceil(logs.length / pageSize))
 
   React.useEffect(() => {
@@ -37,6 +38,16 @@ export const LogList: React.FC<LogListProps> = ({
 
   const startIndex = (currentPage - 1) * pageSize
   const paginatedLogs = logs.slice(startIndex, startIndex + pageSize)
+  const pageWindowStart =
+    Math.floor((currentPage - 1) / visiblePageCount) * visiblePageCount + 1
+  const pageWindowEnd = Math.min(
+    totalPages,
+    pageWindowStart + visiblePageCount - 1
+  )
+  const visiblePages = Array.from(
+    { length: pageWindowEnd - pageWindowStart + 1 },
+    (_, index) => pageWindowStart + index
+  )
 
   if (isLoading) {
     return (
@@ -85,20 +96,18 @@ export const LogList: React.FC<LogListProps> = ({
               <ChevronLeft className="h-4 w-4" />
             </Button>
 
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-              (page) => (
-                <Button
-                  key={page}
-                  type="button"
-                  variant={currentPage === page ? "secondary" : "ghost"}
-                  onClick={() => setCurrentPage(page)}
-                  className="h-9 min-w-9 px-3"
-                  aria-current={currentPage === page ? "page" : undefined}
-                >
-                  {page}
-                </Button>
-              )
-            )}
+            {visiblePages.map((page) => (
+              <Button
+                key={page}
+                type="button"
+                variant={currentPage === page ? "secondary" : "ghost"}
+                onClick={() => setCurrentPage(page)}
+                className="h-9 min-w-9 px-3"
+                aria-current={currentPage === page ? "page" : undefined}
+              >
+                {page}
+              </Button>
+            ))}
 
             <Button
               type="button"

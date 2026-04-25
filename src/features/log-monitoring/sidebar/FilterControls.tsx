@@ -27,8 +27,14 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 }) => {
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-      <Select value={sortBy} onValueChange={(value) => onSortChange(value as SortOption)}>
-        <SelectTrigger aria-label="Sort logs" className="h-11 w-full rounded-xl bg-background px-4 shadow-xs">
+      <Select
+        value={sortBy}
+        onValueChange={(value) => onSortChange(value as SortOption)}
+      >
+        <SelectTrigger
+          aria-label="Sort logs"
+          className="h-11 w-full rounded-xl bg-background px-4 shadow-xs"
+        >
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -38,8 +44,14 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         </SelectContent>
       </Select>
 
-      <Select value={groupBy} onValueChange={(value) => onGroupChange(value as GroupOption)}>
-        <SelectTrigger aria-label="Group logs" className="h-11 w-full rounded-xl bg-background px-4 shadow-xs">
+      <Select
+        value={groupBy}
+        onValueChange={(value) => onGroupChange(value as GroupOption)}
+      >
+        <SelectTrigger
+          aria-label="Group logs"
+          className="h-11 w-full rounded-xl bg-background px-4 shadow-xs"
+        >
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

@@ -11,6 +11,32 @@ export interface Log {
   userCount: number
   lastSeen: string
   trend?: number
+  status?: string
+  exception?: string
+  errorDescription?: string
+  vendor?: string
+  logGroupName?: string
+  dataScanned?: string
+  cost?: string
+  errorCode?: string
+  priority?: string
+  lastUpdateTimestamp?: string
+  lastEscalationDatetime?: string
+  successFailureUpdatedTime?: string
+  consecutiveFailureCount?: number
+  escalation1Email?: string
+  escalation2Email?: string
+  escalation3Email?: string
+  escalation4Email?: string
+  thresholdTime1?: number
+  thresholdTime2?: number
+  thresholdTime3?: number
+  thresholdTime4?: number
+  escalationLevel?: number
+  escalationCount?: number
+  desiredCount?: number
+  serviceName?: string
+  apiServiceName?: string
 }
 
 export interface SideBarProps {

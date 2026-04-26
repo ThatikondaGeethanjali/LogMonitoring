@@ -6,9 +6,9 @@
  */
 
 import { useEffect, useState } from "react"
-import type { SideBarProps, SortOption, GroupOption } from "./types"
-import { DEFAULT_LOGS } from "./constants"
-import { useFilteredLogs } from "./hooks"
+import type { SideBarProps, SortOption } from "./types"
+import { ALL_FILTER_VALUE, DEFAULT_LOGS } from "./constants"
+import { useFilteredLogs, useLogFilterOptions } from "./hooks"
 import { SideBarHeader } from "./SideBarHeader"
 import { SearchBar } from "./SearchBar"
 import { FilterControls } from "./FilterControls"
@@ -28,15 +28,22 @@ export default function SideBar({
 }: SideBarProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState<SortOption>("frequency")
-  const [groupBy, setGroupBy] = useState<GroupOption>("issue")
+  const [apiName, setApiName] = useState(ALL_FILTER_VALUE)
+  const [serviceName, setServiceName] = useState(ALL_FILTER_VALUE)
   const [internalSelectedLogId, setInternalSelectedLogId] = useState(
     selectedLogId ?? logs[0]?.id
   )
+  const { apiNames, serviceNames } = useLogFilterOptions(logs)
+  const selectedApiName = apiName === ALL_FILTER_VALUE ? "" : apiName
+  const selectedServiceName =
+    serviceName === ALL_FILTER_VALUE ? "" : serviceName
 
   const filteredAndSortedLogs = useFilteredLogs({
     logs,
     searchQuery,
     sortBy,
+    apiName: selectedApiName,
+    serviceName: selectedServiceName,
   })
 
   const activeSelectedLogId = selectedLogId ?? internalSelectedLogId
@@ -80,8 +87,12 @@ export default function SideBar({
           <FilterControls
             sortBy={sortBy}
             onSortChange={setSortBy}
-            groupBy={groupBy}
-            onGroupChange={setGroupBy}
+            apiName={apiName}
+            onApiNameChange={setApiName}
+            serviceName={serviceName}
+            onServiceNameChange={setServiceName}
+            apiOptions={apiNames}
+            serviceOptions={serviceNames}
           />
         </div>
 

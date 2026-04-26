@@ -47,4 +47,3 @@ export interface SideBarProps {
 }
 
 export type SortOption = "frequency" | "recent" | "impact"
-export type GroupOption = "issue" | "severity" | "package"

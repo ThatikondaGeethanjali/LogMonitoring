@@ -3,7 +3,7 @@
  */
 
 import { useMemo } from "react"
-import type { Log, SortOption } from "./types"
+import type { DateRange, Log, QuickRangeOption, SortOption } from "./types"
 
 interface UseFilteredLogsParams {
   logs: Log[]
@@ -11,7 +11,10 @@ interface UseFilteredLogsParams {
   sortBy: SortOption
   apiName: string
   serviceName: string
+  dateRange: DateRange
 }
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000
 
 const getSearchableValues = (log: Log) => [
   log.name,
@@ -38,6 +41,79 @@ const matchesExactFilter = (value: string, selectedValue: string) => {
   return value.toLowerCase() === selectedValue
 }
 
+const parseDateValue = (value: string) => {
+  if (!value) {
+    return null
+  }
+
+  if (value.includes("T")) {
+    const parsedDateTime = new Date(value)
+    return Number.isNaN(parsedDateTime.getTime()) ? null : parsedDateTime
+  }
+
+  const [year = "", month = "", day = ""] = value.split("-")
+
+  if (!year || !month || !day) {
+    return null
+  }
+
+  const parsedDate = new Date(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    0,
+    0,
+    0,
+    0
+  )
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return null
+  }
+
+  return parsedDate
+}
+
+const getFromTime = (value: string) => {
+  const parsedDate = parseDateValue(value)
+
+  if (!parsedDate) {
+    return null
+  }
+
+  if (!value.includes("T")) {
+    parsedDate.setHours(0, 0, 0, 0)
+  }
+
+  return parsedDate.getTime()
+}
+
+const getToTime = (value: string) => {
+  const parsedDate = parseDateValue(value)
+
+  if (!parsedDate) {
+    return null
+  }
+
+  if (!value.includes("T")) {
+    parsedDate.setHours(23, 59, 59, 999)
+  }
+
+  return parsedDate.getTime()
+}
+
+const matchesDateRange = (log: Log, dateRange: DateRange) => {
+  const logTime = parseDateValue(log.lastSeen)?.getTime() ?? null
+  const fromTime = getFromTime(dateRange.from)
+  const toTime = getToTime(dateRange.to)
+
+  if (logTime === null || fromTime === null || toTime === null) {
+    return false
+  }
+
+  return logTime >= fromTime && logTime <= toTime
+}
+
 const sortLogs = (logs: Log[], sortBy: SortOption) => {
   const sortedLogs = [...logs]
 
@@ -60,6 +136,24 @@ const sortLogs = (logs: Log[], sortBy: SortOption) => {
 const getUniqueSortedOptions = (values: string[]) =>
   Array.from(new Set(values.filter(Boolean))).sort((a, b) => a.localeCompare(b))
 
+const formatDateInputValue = (date: Date) => {
+  const year = date.getFullYear()
+  const month = `${date.getMonth() + 1}`.padStart(2, "0")
+  const day = `${date.getDate()}`.padStart(2, "0")
+
+  return `${year}-${month}-${day}`
+}
+
+const formatDateTimeInputValue = (date: Date) => {
+  const year = date.getFullYear()
+  const month = `${date.getMonth() + 1}`.padStart(2, "0")
+  const day = `${date.getDate()}`.padStart(2, "0")
+  const hours = `${date.getHours()}`.padStart(2, "0")
+  const minutes = `${date.getMinutes()}`.padStart(2, "0")
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`
+}
+
 /**
  * Hook to filter and sort logs based on search query and sort option
  */
@@ -69,6 +163,7 @@ export const useFilteredLogs = ({
   sortBy,
   apiName,
   serviceName,
+  dateRange,
 }: UseFilteredLogsParams): Log[] => {
   return useMemo(() => {
     const normalizedQuery = searchQuery.toLowerCase()
@@ -82,12 +177,13 @@ export const useFilteredLogs = ({
       return (
         matchesSearchQuery(log, normalizedQuery) &&
         matchesExactFilter(resolvedApiName, normalizedApiName) &&
-        matchesExactFilter(resolvedServiceName, normalizedServiceName)
+        matchesExactFilter(resolvedServiceName, normalizedServiceName) &&
+        matchesDateRange(log, dateRange)
       )
     })
 
     return sortLogs(filteredLogs, sortBy)
-  }, [apiName, logs, searchQuery, serviceName, sortBy])
+  }, [apiName, dateRange, logs, searchQuery, serviceName, sortBy])
 }
 
 export const useLogFilterOptions = (logs: Log[]) => {
@@ -102,4 +198,48 @@ export const useLogFilterOptions = (logs: Log[]) => {
     }),
     [logs]
   )
+}
+
+export const getDefaultDateRange = (): DateRange => {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const twoMonthsAgo = new Date(today)
+  twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2)
+
+  // Clamp edge cases like month rollover while preserving a roughly 2-month window.
+  if (twoMonthsAgo > today) {
+    twoMonthsAgo.setTime(today.getTime() - 60 * MS_PER_DAY)
+  }
+
+  return {
+    from: formatDateInputValue(twoMonthsAgo),
+    to: formatDateInputValue(today),
+  }
+}
+
+export const getQuickRangeDateRange = (
+  range: Exclude<QuickRangeOption, "all">
+): DateRange => {
+  const hours = Number.parseInt(range, 10)
+  const now = new Date()
+  const from = new Date(now.getTime() - hours * 60 * 60 * 1000)
+
+  return {
+    from: formatDateTimeInputValue(from),
+    to: formatDateTimeInputValue(now),
+  }
+}
+
+export const getDateFilterBounds = (logs: Log[]) => {
+  const defaultRange = getDefaultDateRange()
+  const logDates = logs
+    .map((log) => parseDateValue(log.lastSeen))
+    .filter((date): date is Date => date !== null)
+    .sort((first, second) => first.getTime() - second.getTime())
+
+  return {
+    minDate: logDates[0] ? formatDateInputValue(logDates[0]) : defaultRange.from,
+    maxDate: defaultRange.to,
+  }
 }

@@ -1,13 +1,9 @@
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import type { Log } from "@/features/log-monitoring/sidebar"
 import {
-  ArrowLeft,
   Bug,
   Calendar,
-  Check,
   CircleAlert,
-  Share2,
   ShieldAlert,
 } from "lucide-react"
 
@@ -49,13 +45,13 @@ export function DashboardHeader({ log }: DashboardHeaderProps) {
   return (
     <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
       <div className="min-w-0 space-y-4">
-        <Button
+        {/* <Button
           variant="link"
           className="h-auto justify-start gap-2 p-0 text-sm font-medium text-[#4f46e5] hover:text-[#4338ca]"
         >
           <ArrowLeft className="size-4" />
           Back to Crash Logs
-        </Button>
+        </Button> */}
 
         <div className="flex items-start gap-3 sm:gap-4">
           <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#fff1f1] text-[#ef4444] sm:size-12">
@@ -93,7 +89,7 @@ export function DashboardHeader({ log }: DashboardHeaderProps) {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-3">
+      {/* <div className="flex flex-wrap gap-3">
         <Button className="h-10 rounded-xl bg-[#4f46e5] px-4 text-white hover:bg-[#4338ca] sm:px-5">
           <Share2 className="size-4" />
           Share
@@ -105,7 +101,7 @@ export function DashboardHeader({ log }: DashboardHeaderProps) {
           <Check className="size-4 text-slate-500" />
           Mark as Resolved
         </Button>
-      </div>
+      </div> */}
     </div>
   )
 }

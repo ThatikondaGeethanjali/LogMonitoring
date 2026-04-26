@@ -25,6 +25,7 @@ export default function SideBar({
   selectedLogId,
   onSelectLog,
   isLoading = false,
+  dateRange,
 }: SideBarProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState<SortOption>("frequency")
@@ -44,12 +45,24 @@ export default function SideBar({
     sortBy,
     apiName: selectedApiName,
     serviceName: selectedServiceName,
+    dateRange,
   })
 
   const activeSelectedLogId = selectedLogId ?? internalSelectedLogId
 
   useEffect(() => {
     if (selectedLogId !== undefined) {
+      if (
+        selectedLogId &&
+        filteredAndSortedLogs.some((log) => log.id === selectedLogId)
+      ) {
+        return
+      }
+
+      if (filteredAndSortedLogs[0]?.id) {
+        onSelectLog?.(filteredAndSortedLogs[0].id)
+      }
+
       return
     }
 

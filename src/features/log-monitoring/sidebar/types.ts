@@ -54,11 +54,4 @@ export interface DateRange {
   to: string
 }
 
-export type QuickRangeOption =
-  | "all"
-  | "1hr"
-  | "2hr"
-  | "3hr"
-  | "4hr"
-  | "5hr"
-  | "6hr"
+export type QuickRangeOption = "all" | "30min" | "1hr" | "2hr" | "4hr" | "6hr"

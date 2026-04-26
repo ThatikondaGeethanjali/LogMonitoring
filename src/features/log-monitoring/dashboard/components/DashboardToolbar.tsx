@@ -9,11 +9,10 @@ import type {
 import { Calendar } from "lucide-react"
 
 const QUICK_RANGE_OPTIONS: Array<Exclude<QuickRangeOption, "all">> = [
+  "30min",
   "1hr",
   "2hr",
-  "3hr",
   "4hr",
-  "5hr",
   "6hr",
 ]
 

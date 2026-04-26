@@ -43,7 +43,7 @@ export function StatsGrid({ log }: StatsGridProps) {
       {statCards.map(({ title, value, subtext, icon: Icon, tone }) => (
         <Card
           key={title}
-          className="gap-0 border-[#e7ebf3] p-4 shadow-[0_1px_2px_rgba(16,24,40,0.04)]"
+          className="gap-0 border-[#e7ebf3] p-4 shadow-[0_1px_2px_rgba(16,24,40,0.04)] transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_14px_34px_rgba(15,23,42,0.10)]"
         >
           <div className="flex items-start justify-between gap-3">
             <div>

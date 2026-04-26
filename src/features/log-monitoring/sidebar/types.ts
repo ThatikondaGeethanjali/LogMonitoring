@@ -44,6 +44,21 @@ export interface SideBarProps {
   selectedLogId?: string
   onSelectLog?: (logId: string) => void
   isLoading?: boolean
+  dateRange: DateRange
 }
 
 export type SortOption = "frequency" | "recent" | "impact"
+
+export interface DateRange {
+  from: string
+  to: string
+}
+
+export type QuickRangeOption =
+  | "all"
+  | "1hr"
+  | "2hr"
+  | "3hr"
+  | "4hr"
+  | "5hr"
+  | "6hr"

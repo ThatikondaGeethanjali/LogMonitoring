@@ -9,6 +9,8 @@ interface UseFilteredLogsParams {
   logs: Log[]
   searchQuery: string
   sortBy: SortOption
+  apiName: string
+  serviceName: string
 }
 
 /**
@@ -18,13 +20,33 @@ export const useFilteredLogs = ({
   logs,
   searchQuery,
   sortBy,
+  apiName,
+  serviceName,
 }: UseFilteredLogsParams): Log[] => {
   return useMemo(() => {
-    // Filter logs by search query
+    const normalizedQuery = searchQuery.toLowerCase()
+    const normalizedApiName = apiName.toLowerCase()
+    const normalizedServiceName = serviceName.toLowerCase()
+
     let filtered = logs.filter(
-      (log) =>
-        log.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        log.package.toLowerCase().includes(searchQuery.toLowerCase())
+      (log) => {
+        const matchesSearch =
+          log.name.toLowerCase().includes(normalizedQuery) ||
+          log.package.toLowerCase().includes(normalizedQuery) ||
+          (log.apiServiceName ?? "").toLowerCase().includes(normalizedQuery) ||
+          (log.serviceName ?? "").toLowerCase().includes(normalizedQuery)
+
+        const matchesApiName =
+          !normalizedApiName ||
+          (log.apiServiceName ?? log.name).toLowerCase() === normalizedApiName
+
+        const matchesServiceName =
+          !normalizedServiceName ||
+          (log.serviceName ?? log.package).toLowerCase() ===
+            normalizedServiceName
+
+        return matchesSearch && matchesApiName && matchesServiceName
+      }
     )
 
     // Sort logs by selected option
@@ -42,5 +64,5 @@ export const useFilteredLogs = ({
     })
 
     return filtered
-  }, [logs, searchQuery, sortBy])
+  }, [apiName, logs, searchQuery, serviceName, sortBy])
 }

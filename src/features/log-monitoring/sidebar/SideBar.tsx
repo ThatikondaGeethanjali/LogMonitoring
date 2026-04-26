@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState } from "react"
-import type { SideBarProps, SortOption, GroupOption } from "./types"
+import type { SideBarProps, SortOption } from "./types"
 import { DEFAULT_LOGS } from "./constants"
 import { useFilteredLogs } from "./hooks"
 import { SideBarHeader } from "./SideBarHeader"
@@ -28,7 +28,8 @@ export default function SideBar({
 }: SideBarProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState<SortOption>("frequency")
-  const [groupBy, setGroupBy] = useState<GroupOption>("issue")
+  const [apiName, setApiName] = useState("all")
+  const [serviceName, setServiceName] = useState("all")
   const [internalSelectedLogId, setInternalSelectedLogId] = useState(
     selectedLogId ?? logs[0]?.id
   )
@@ -37,6 +38,8 @@ export default function SideBar({
     logs,
     searchQuery,
     sortBy,
+    apiName: apiName === "all" ? "" : apiName,
+    serviceName: serviceName === "all" ? "" : serviceName,
   })
 
   const activeSelectedLogId = selectedLogId ?? internalSelectedLogId
@@ -78,10 +81,13 @@ export default function SideBar({
 
         <div className="mt-4">
           <FilterControls
+            logs={logs}
             sortBy={sortBy}
             onSortChange={setSortBy}
-            groupBy={groupBy}
-            onGroupChange={setGroupBy}
+            apiName={apiName}
+            onApiNameChange={setApiName}
+            serviceName={serviceName}
+            onServiceNameChange={setServiceName}
           />
         </div>
 

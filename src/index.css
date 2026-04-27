@@ -99,3 +99,58 @@
     @apply font-sans;
   }
 }
+
+@layer components {
+  .dashboard-surface {
+    background:
+      linear-gradient(135deg, rgb(248 250 252 / 0.92), rgb(240 249 255 / 0.72)),
+      radial-gradient(circle at top left, rgb(14 165 233 / 0.1), transparent 34%),
+      linear-gradient(rgb(226 232 240 / 0.45) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(226 232 240 / 0.45) 1px, transparent 1px);
+    background-size:
+      auto,
+      auto,
+      32px 32px,
+      32px 32px;
+  }
+
+  .glass-panel {
+    @apply border border-white/70 bg-white/85 shadow-[0_14px_42px_rgb(15_23_42/0.08)] backdrop-blur-xl;
+  }
+
+  .dashboard-card {
+    @apply border-zinc-200/80 bg-white/95 shadow-[0_10px_30px_rgb(15_23_42/0.06)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-[0_18px_42px_rgb(14_165_233/0.12)];
+  }
+
+  .pressable {
+    @apply transition-all duration-150 ease-out active:scale-[0.985];
+  }
+
+  .soft-ring {
+    @apply ring-1 ring-black/5;
+  }
+
+  .live-dot {
+    @apply relative size-2 rounded-full bg-emerald-500;
+  }
+
+  .live-dot::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 9999px;
+    background: rgb(16 185 129 / 0.22);
+    animation: live-pulse 1.8s ease-out infinite;
+  }
+}
+
+@keyframes live-pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
